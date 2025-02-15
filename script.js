@@ -8,7 +8,7 @@ document.getElementById("orderForm").addEventListener("submit", function(event) 
         quantity: document.getElementById("quantity").value
     };
 
-    fetch("https://script.google.com/macros/s/AKfycbze554OWTLV7wI8s5xGAawH27EkHCyMZSDZc6IASsGw914XOtMRS2gNVEu0BBSPjhJ0og/exec", {
+    fetch("AKfycbze554OWTLV7wI8s5xGAawH27EkHCyMZSDZc6IASsGw914XOtMRS2gNVEu0BBSPjhJ0og", {
         method: "POST",
         mode: "no-cors",
         headers: {
