@@ -1,31 +1,0 @@
-<!DOCTYPE html>
-<html lang="ar">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>طلب أنابيب الغاز</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <div class="container">
-        <h1>🚚 طلب أنابيب الغاز</h1>
-        <form id="orderForm">
-            <label for="name">الاسم الكامل:</label>
-            <input type="text" id="name" required>
-            
-            <label for="address">العنوان:</label>
-            <input type="text" id="address" required>
-
-            <label for="phone">رقم الهاتف:</label>
-            <input type="tel" id="phone" required>
-
-            <label for="quantity">عدد الأنابيب:</label>
-            <input type="number" id="quantity" min="1" required>
-
-            <button type="submit">إرسال الطلب</button>
-        </form>
-        <p id="message"></p>
-    </div>
-    <script src="script.js"></script>
-</body>
-</html>
