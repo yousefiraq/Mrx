@@ -1,4 +1,4 @@
-import { db, collection, getDocs, updateDoc, doc, deleteDoc } from "./firebase-config.js";
+import { db, collection, getDocs, updateDoc, doc, deleteDoc, getDoc } from "./firebase-config.js";
 
 async function fetchOrders() {
     const tableBody = document.getElementById("ordersTable");
@@ -39,7 +39,7 @@ async function fetchOrders() {
         // أحداث الحذف
         document.querySelectorAll('.delete-btn').forEach(btn => {
             btn.addEventListener('click', async () => {
-                if (confirm('هل أنت متأكد من حذف هذا الطلب؟')) {
+                if (confirm('هل أنت متأكد من الحذف؟')) {
                     await deleteOrder(btn.dataset.id);
                 }
             });
@@ -85,15 +85,15 @@ async function editOrderDetails(orderId) {
         
         if (docSnap.exists()) {
             const data = docSnap.data();
-            const newName = prompt("الاسم الجديد:", data.name);
-            const newPhone = prompt("الهاتف الجديد:", data.phone);
-            const newAddress = prompt("العنوان الجديد:", data.address);
+            const newName = prompt("الاسم الحالي: " + data.name + "\n\nأدخل الاسم الجديد:", data.name);
+            const newPhone = prompt("الهاتف الحالي: " + data.phone + "\n\nأدخل الهاتف الجديد:", data.phone);
+            const newAddress = prompt("العنوان الحالي: " + data.address + "\n\nأدخل العنوان الجديد:", data.address);
             
-            if (newName && newPhone && newAddress) {
+            if (newName !== null && newPhone !== null && newAddress !== null) {
                 await updateDoc(docRef, {
-                    name: newName,
-                    phone: newPhone,
-                    address: newAddress
+                    name: newName || data.name,
+                    phone: newPhone || data.phone,
+                    address: newAddress || data.address
                 });
                 await fetchOrders();
                 alert("تم التحديث بنجاح!");
@@ -101,7 +101,7 @@ async function editOrderDetails(orderId) {
         }
     } catch (error) {
         console.error("خطأ في التعديل:", error);
-        alert("فشل في تعديل البيانات!");
+        alert("فشل في التحديث: " + error.message);
     }
 }
 
