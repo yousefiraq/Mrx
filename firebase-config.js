@@ -2,14 +2,13 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase
 import { 
     getFirestore, 
     collection, 
-    addDoc, 
     getDocs, 
     updateDoc, 
     doc, 
-    deleteDoc,
-    getDoc 
+    deleteDoc 
 } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
+// التكوين الخاص بك من Firebase Console
 const firebaseConfig = {
     apiKey: "AIzaSyBf9FQ...",
     authDomain: "gaz-delivery-1.firebaseapp.com",
@@ -23,4 +22,4 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-export { db, collection, addDoc, getDocs, updateDoc, doc, deleteDoc, getDoc };
+export { db, collection, getDocs, updateDoc, doc, deleteDoc };
