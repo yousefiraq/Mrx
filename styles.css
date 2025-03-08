@@ -1,144 +1,41 @@
-/* التنسيقات العامة */
-body {
-    font-family: 'Tahoma', sans-serif;
-    background-image: url('https://i.imgur.com/KpQqytJ.jpeg');
-    background-size: cover;
-    background-position: center;
-    margin: 0;
-    min-height: 100vh;
-    color: #333;
-    transition: all 0.3s ease;
-}
+/* ... التنسيقات الأصلية ... */
 
-/* الوضع الداكن */
-body.dark-mode {
-    background-image: none;
-    background-color: #1a1a1a;
-    color: #ffffff;
-}
-
-/* الهيدر */
-.header {
+/* عدادات الحالات */
+.counters-container {
     display: flex;
-    align-items: center;
-    padding: 1rem 2rem;
+    gap: 15px;
+    margin-top: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.counter-box {
     background: rgba(255, 255, 255, 0.9);
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    position: relative;
-}
-
-.iraq-logo {
-    height: 100px;
-    width: 100px;
-    border-radius: 50%;
-    border: 3px solid #ce1126;
-    margin-left: 20px;
-    box-shadow: 0 0 15px rgba(206, 17, 38, 0.5);
-    transition: transform 0.5s;
-}
-
-.iraq-logo:hover {
-    transform: rotate(360deg);
-}
-
-/* شريط البحث */
-.search-container {
-    display: flex;
-    gap: 10px;
-    position: absolute;
-    left: 20px;
-    top: 20px;
-}
-
-#searchInput {
-    padding: 10px 15px;
-    border: 2px solid #ce1126;
-    border-radius: 25px;
-    width: 250px;
-    font-size: 14px;
-    background: rgba(255, 255, 255, 0.9);
-}
-
-#searchInput:focus {
-    outline: none;
-    box-shadow: 0 0 10px rgba(206, 17, 38, 0.3);
-}
-
-/* الحاوية الرئيسية */
-.container {
-    width: 90%;
-    margin: 2rem auto;
-    background: rgba(255, 255, 255, 0.95);
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-    backdrop-filter: blur(5px);
-}
-
-/* الجدول */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 1.5rem;
-}
-
-th, td {
-    padding: 12px 15px;
-    border: 1px solid #e0e0e0;
+    padding: 15px 25px;
+    border-radius: 10px;
     text-align: center;
+    min-width: 120px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
-th {
-    background: linear-gradient(45deg, #ce1126, #8b0000);
-    color: white;
-    font-weight: 600;
+.counter-box h3 {
+    margin: 0 0 10px 0;
+    font-size: 14px;
 }
 
-/* الأزرار */
-.dark-mode-btn {
-    padding: 10px 20px;
-    background: linear-gradient(45deg, #2d4059, #222831);
-    color: white;
-    border: none;
-    border-radius: 25px;
-    cursor: pointer;
-    transition: 0.3s;
+.counter-box span {
+    font-size: 24px;
+    font-weight: bold;
 }
 
-.action-btn {
-    padding: 8px 16px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: transform 0.2s;
-    margin: 2px;
-}
-
-.edit-btn {
-    background: linear-gradient(45deg, #4CAF50, #45a049);
-    color: white;
-}
-
-.delete-btn {
-    background: linear-gradient(45deg, #dc3545, #c82333);
-    color: white;
-}
-
-.action-btn:hover {
-    transform: translateY(-2px);
-}
+/* ألوان الحالات */
+.total { border: 3px solid #ce1126; }
+.pending { border: 3px solid #ffc107; }
+.delivered { border: 3px solid #28a745; }
+.canceled { border: 3px solid #dc3545; }
 
 /* الوضع الداكن */
-body.dark-mode .container {
-    background: rgba(40, 40, 40, 0.95);
-}
-
-body.dark-mode th {
-    background: linear-gradient(45deg, #454545, #333);
-}
-
-body.dark-mode #searchInput {
-    background: #333;
+body.dark-mode .counter-box {
+    background: rgba(40, 40, 40, 0.9);
     color: white;
-    border-color: #666;
 }
