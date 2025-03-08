@@ -1,6 +1,6 @@
 import { db, collection, getDocs, updateDoc, doc, deleteDoc, getDoc } from "./firebase-config.js";
 
-// دالة البحث عن الطلبات
+// دالة البحث عن الأسماء
 function searchOrders() {
     const searchTerm = document.getElementById('searchInput').value.toLowerCase();
     const rows = document.querySelectorAll('#ordersTable tr');
@@ -11,7 +11,7 @@ function searchOrders() {
     });
 }
 
-// إضافة حدث البحث مع تأخير 300ms
+// تفعيل البحث مع تأخير 300ms
 let searchTimeout;
 document.getElementById('searchInput').addEventListener('input', () => {
     clearTimeout(searchTimeout);
@@ -67,6 +67,7 @@ async function fetchOrders() {
             });
         });
 
+        // إعادة تعيين البحث
         document.getElementById('searchInput').value = '';
         searchOrders();
 
@@ -76,4 +77,51 @@ async function fetchOrders() {
     }
 }
 
-// بقية الدوال (deleteOrder, updateOrderStatus, editOrderDetails) كما هي...
+async function deleteOrder(orderId) {
+    try {
+        await deleteDoc(doc(db, "orders", orderId));
+        await fetchOrders();
+        alert("تم الحذف بنجاح!");
+    } catch (error) {
+        console.error("خطأ في الحذف:", error);
+        alert("فشل في حذف الطلب!");
+    }
+}
+
+async function updateOrderStatus(orderId, newStatus) {
+    try {
+        await updateDoc(doc(db, "orders", orderId), { status: newStatus });
+    } catch (error) {
+        console.error("خطأ في التحديث:", error);
+        alert("فشل في تحديث الحالة!");
+    }
+}
+
+async function editOrderDetails(orderId) {
+    try {
+        const docRef = doc(db, "orders", orderId);
+        const docSnap = await getDoc(docRef);
+        
+        if (docSnap.exists()) {
+            const data = docSnap.data();
+            const newName = prompt("الاسم الحالي: " + data.name + "\n\nأدخل الاسم الجديد:", data.name);
+            const newPhone = prompt("الهاتف الحالي: " + data.phone + "\n\nأدخل الهاتف الجديد:", data.phone);
+            const newAddress = prompt("العنوان الحالي: " + data.address + "\n\nأدخل العنوان الجديد:", data.address);
+            
+            if (newName !== null && newPhone !== null && newAddress !== null) {
+                await updateDoc(docRef, {
+                    name: newName || data.name,
+                    phone: newPhone || data.phone,
+                    address: newAddress || data.address
+                });
+                await fetchOrders();
+                alert("تم التحديث بنجاح!");
+            }
+        }
+    } catch (error) {
+        console.error("خطأ في التعديل:", error);
+        alert("فشل في التحديث: " + error.message);
+    }
+}
+
+window.onload = fetchOrders;
