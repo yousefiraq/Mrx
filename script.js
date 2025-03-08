@@ -1,16 +1,21 @@
-import { db, collection, addDoc } from "./firebase-config.js";
-
-// تفعيل الوضع الداكن
+// تفعيل الوضع الداكن مع التخزين المحلي
 document.getElementById("darkModeToggle").addEventListener("click", () => {
     document.body.classList.toggle("dark-mode");
-    
-    // حفظ التفضيل في localStorage
-    const isDarkMode = document.body.classList.contains("dark-mode");
-    localStorage.setItem("darkMode", isDarkMode);
+    localStorage.setItem("darkMode", document.body.classList.contains("dark-mode"));
 });
 
-// استعادة تفضيل الوضع الداكن عند التحميل
+// استعادة الوضع الداكن عند التحميل
 window.addEventListener('load', () => {
-    const isDarkMode = localStorage.getItem("darkMode") === 'true';
-    if (isDarkMode) document.body.classList.add("dark-mode");
+    if (localStorage.getItem("darkMode") === 'true') {
+        document.body.classList.add("dark-mode");
+    }
+});
+
+// تأثيرات الشعار
+document.querySelector('.iraq-logo').addEventListener('mouseover', function() {
+    this.style.transform = 'rotate(360deg)';
+});
+
+document.querySelector('.iraq-logo').addEventListener('mouseout', function() {
+    this.style.transform = 'rotate(0deg)';
 });
