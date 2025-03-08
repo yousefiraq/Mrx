@@ -1,22 +1,21 @@
 import { db, collection, getDocs, updateDoc, doc, deleteDoc, getDoc } from "./firebase-config.js";
 
-// دالة البحث عن الأسماء
+// دالة البحث عن الطلبات
 function searchOrders() {
     const searchTerm = document.getElementById('searchInput').value.toLowerCase();
     const rows = document.querySelectorAll('#ordersTable tr');
     
     rows.forEach(row => {
-        const nameCell = row.querySelector('td:first-child');
-        if (nameCell) {
-            const name = nameCell.textContent.toLowerCase();
-            row.style.display = name.includes(searchTerm) ? '' : 'none';
-        }
+        const name = row.cells[0].textContent.toLowerCase();
+        row.style.display = name.includes(searchTerm) ? '' : 'none';
     });
 }
 
-// أحداث البحث أثناء الكتابة
+// إضافة حدث البحث مع تأخير 300ms
+let searchTimeout;
 document.getElementById('searchInput').addEventListener('input', () => {
-    searchOrders();
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(searchOrders, 300);
 });
 
 async function fetchOrders() {
@@ -48,15 +47,33 @@ async function fetchOrders() {
             tableBody.innerHTML += row;
         });
 
-        // إعادة تعيين البحث بعد تحميل البيانات
+        document.querySelectorAll('.status-select').forEach(select => {
+            select.addEventListener('change', async () => {
+                await updateOrderStatus(select.dataset.id, select.value);
+            });
+        });
+
+        document.querySelectorAll('.delete-btn').forEach(btn => {
+            btn.addEventListener('click', async () => {
+                if (confirm('هل أنت متأكد من الحذف؟')) {
+                    await deleteOrder(btn.dataset.id);
+                }
+            });
+        });
+
+        document.querySelectorAll('.edit-btn').forEach(btn => {
+            btn.addEventListener('click', async () => {
+                await editOrderDetails(btn.dataset.id);
+            });
+        });
+
         document.getElementById('searchInput').value = '';
         searchOrders();
 
-        // بقية الأحداث...
     } catch (error) {
         console.error("حدث خطأ في جلب البيانات:", error);
         alert("تعذر تحميل الطلبات!");
     }
 }
 
-// بقية الدوال كما هي...
+// بقية الدوال (deleteOrder, updateOrderStatus, editOrderDetails) كما هي...
