@@ -1,14 +1,29 @@
 /* التنسيقات العامة */
 body {
     font-family: 'Tahoma', sans-serif;
-    background-image: url('https://i.imgur.com/KpQqytJ.jpeg');
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
+    background-image: url('background.jpg'), url('iraq_flag.png');
+    background-size: cover, 150px;
+    background-position: center, top right;
+    background-repeat: no-repeat;
     margin: 0;
     min-height: 100vh;
     color: #333;
     transition: all 0.3s ease;
+}
+
+/* الوضع الداكن */
+body.dark-mode {
+    background-color: #1a1a1a;
+    color: #ffffff;
+    background-image: none;
+}
+
+body.dark-mode .container {
+    background: rgba(40, 40, 40, 0.95);
+}
+
+body.dark-mode th {
+    background: linear-gradient(45deg, #2d4059, #222831);
 }
 
 /* الهيدر */
@@ -16,23 +31,14 @@ body {
     display: flex;
     align-items: center;
     padding: 1rem 2rem;
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(0, 87, 146, 0.9);
+    color: white;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    position: relative;
 }
 
-.iraq-logo {
-    height: 100px;
-    width: 100px;
-    border-radius: 50%;
-    border: 3px solid #ce1126;
+.header img {
+    height: 70px;
     margin-left: 20px;
-    box-shadow: 0 0 15px rgba(206, 17, 38, 0.5);
-    transition: transform 0.5s;
-}
-
-.iraq-logo:hover {
-    transform: rotate(360deg);
 }
 
 /* الحاوية الرئيسية */
@@ -43,7 +49,6 @@ body {
     padding: 20px;
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-    backdrop-filter: blur(5px);
 }
 
 /* الجدول */
@@ -60,40 +65,58 @@ th, td {
 }
 
 th {
-    background: linear-gradient(45deg, #ce1126, #8b0000);
+    background: linear-gradient(45deg, #007bff, #0056b3);
     color: white;
     font-weight: 600;
 }
 
-/* أزرار الوضع الداكن */
-.dark-mode-btn {
-    padding: 10px 20px;
-    background: linear-gradient(45deg, #2d4059, #222831);
-    color: white;
-    border: none;
-    border-radius: 25px;
+/* عناصر التحكم */
+.status-select {
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid #ced4da;
+    background: #f8f9fa;
     cursor: pointer;
-    position: absolute;
-    left: 20px;
-    transition: 0.3s;
+    transition: all 0.2s;
+    width: 90%;
 }
 
-.dark-mode-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+.status-select:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0,123,255,0.25);
+}
+
+/* الأزرار */
+.action-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: transform 0.2s;
+    margin: 2px;
+}
+
+.edit-btn {
+    background: linear-gradient(45deg, #4CAF50, #45a049);
+    color: white;
+}
+
+.delete-btn {
+    background: linear-gradient(45deg, #dc3545, #c82333);
+    color: white;
+}
+
+.action-btn:hover {
+    transform: translateY(-2px);
 }
 
 /* الوضع الداكن */
-body.dark-mode {
-    background-image: none;
-    background-color: #1a1a1a;
-    color: #ffffff;
+body.dark-mode .status-select {
+    background: #2d2d2d;
+    color: #fff;
+    border-color: #444;
 }
 
-body.dark-mode .container {
-    background: rgba(40, 40, 40, 0.95);
-}
-
-body.dark-mode th {
-    background: linear-gradient(45deg, #454545, #333);
+body.dark-mode .action-btn {
+    filter: brightness(1.2);
 }
