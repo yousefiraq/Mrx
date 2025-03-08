@@ -1,21 +1,16 @@
 import { db, collection, addDoc } from "./firebase-config.js";
 
-document.getElementById("orderForm").addEventListener("submit", async function (e) {
-    e.preventDefault();
+// تفعيل الوضع الداكن
+document.getElementById("darkModeToggle").addEventListener("click", () => {
+    document.body.classList.toggle("dark-mode");
+    
+    // حفظ التفضيل في localStorage
+    const isDarkMode = document.body.classList.contains("dark-mode");
+    localStorage.setItem("darkMode", isDarkMode);
+});
 
-    let name = document.getElementById("name").value;
-    let phone = document.getElementById("phone").value;
-    let address = document.getElementById("address").value;
-
-    if (name && phone && address) {
-        try {
-            await addDoc(collection(db, "orders"), { name, phone, address, status: "قيد الانتظار" });
-            alert("تم إرسال الطلب بنجاح!");
-            document.getElementById("orderForm").reset();
-        } catch (error) {
-            console.error("خطأ في إرسال الطلب: ", error);
-        }
-    } else {
-        alert("يرجى ملء جميع الحقول!");
-    }
+// استعادة تفضيل الوضع الداكن عند التحميل
+window.addEventListener('load', () => {
+    const isDarkMode = localStorage.getItem("darkMode") === 'true';
+    if (isDarkMode) document.body.classList.add("dark-mode");
 });
