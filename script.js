@@ -3,14 +3,12 @@ import { db, collection, addDoc } from "./firebase-config.js";
 // تفعيل الوضع الداكن
 document.getElementById("darkModeToggle").addEventListener("click", () => {
     document.body.classList.toggle("dark-mode");
-    
-    // حفظ التفضيل في localStorage
-    const isDarkMode = document.body.classList.contains("dark-mode");
-    localStorage.setItem("darkMode", isDarkMode);
+    localStorage.setItem("darkMode", document.body.classList.contains("dark-mode"));
 });
 
-// استعادة تفضيل الوضع الداكن عند التحميل
+// استعادة الوضع الداكن
 window.addEventListener('load', () => {
-    const isDarkMode = localStorage.getItem("darkMode") === 'true';
-    if (isDarkMode) document.body.classList.add("dark-mode");
+    if (localStorage.getItem("darkMode") === 'true') {
+        document.body.classList.add("dark-mode");
+    }
 });
