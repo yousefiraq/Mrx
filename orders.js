@@ -50,6 +50,14 @@ async function fetchOrders() {
                         </select>
                     </td>
                     <td>
+                        <button 
+                            class="map-btn" 
+                            onclick="showOrderMap(${data.latitude}, ${data.longitude})"
+                        >
+                            🌍 عرض الموقع
+                        </button>
+                    </td>
+                    <td>
                         <button class="action-btn edit-btn" data-id="${docItem.id}">✏️ تعديل</button>
                         <button class="action-btn delete-btn" data-id="${docItem.id}">🗑️ حذف</button>
                     </td>
@@ -83,61 +91,4 @@ async function fetchOrders() {
             });
         });
 
-        document.getElementById('searchInput').value = '';
-        searchOrders();
-
-    } catch (error) {
-        console.error("حدث خطأ في جلب البيانات:", error);
-        alert("تعذر تحميل الطلبات!");
-    }
-}
-
-async function deleteOrder(orderId) {
-    try {
-        await deleteDoc(doc(db, "orders", orderId));
-        await fetchOrders();
-        alert("تم الحذف بنجاح!");
-    } catch (error) {
-        console.error("خطأ في الحذف:", error);
-        alert("فشل في حذف الطلب!");
-    }
-}
-
-async function updateOrderStatus(orderId, newStatus) {
-    try {
-        await updateDoc(doc(db, "orders", orderId), { status: newStatus });
-        await fetchOrders();
-    } catch (error) {
-        console.error("خطأ في التحديث:", error);
-        alert("فشل في تحديث الحالة!");
-    }
-}
-
-async function editOrderDetails(orderId) {
-    try {
-        const docRef = doc(db, "orders", orderId);
-        const docSnap = await getDoc(docRef);
-        
-        if (docSnap.exists()) {
-            const data = docSnap.data();
-            const newName = prompt("الاسم الحالي: " + data.name + "\n\nأدخل الاسم الجديد:", data.name);
-            const newPhone = prompt("الهاتف الحالي: " + data.phone + "\n\nأدخل الهاتف الجديد:", data.phone);
-            const newAddress = prompt("العنوان الحالي: " + data.address + "\n\nأدخل العنوان الجديد:", data.address);
-            
-            if (newName !== null && newPhone !== null && newAddress !== null) {
-                await updateDoc(docRef, {
-                    name: newName || data.name,
-                    phone: newPhone || data.phone,
-                    address: newAddress || data.address
-                });
-                await fetchOrders();
-                alert("تم التحديث بنجاح!");
-            }
-        }
-    } catch (error) {
-        console.error("خطأ في التعديل:", error);
-        alert("فشل في التحديث: " + error.message);
-    }
-}
-
-window.onload = fetchOrders;
+        document.getElementById
