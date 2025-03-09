@@ -1,24 +1,23 @@
 import { db, collection, addDoc } from "./firebase-config.js";
 
-// تفعيل الوضع الداكن
+// إدارة الوضع الداكن
 document.getElementById("darkModeToggle").addEventListener("click", () => {
     document.body.classList.toggle("dark-mode");
     localStorage.setItem("darkMode", document.body.classList.contains("dark-mode"));
 });
 
-// استعادة الوضع الداكن
 window.addEventListener('load', () => {
     if (localStorage.getItem("darkMode") === 'true') {
         document.body.classList.add("dark-mode");
     }
 });
 
-// تهيئة منصة HERE Maps
+// تهيئة HERE Maps
 const platform = new H.service.Platform({
     apikey: "7kAhoWptjUW7A_sSWh3K2qaZ6Lzi4q3xaDRYwFWnCbE"
 });
 
-// دالة عرض الخريطة
+// عرض الخريطة في Modal
 window.showOrderMap = (lat, lng) => {
     const modal = document.createElement('div');
     modal.style.cssText = `
@@ -58,7 +57,6 @@ window.showOrderMap = (lat, lng) => {
 
     document.body.appendChild(modal);
 
-    // تهيئة الخريطة
     const defaultLayers = platform.createDefaultLayers();
     const map = new H.Map(
         document.getElementById('mapContainer'),
@@ -66,10 +64,17 @@ window.showOrderMap = (lat, lng) => {
         { center: { lat: lat, lng: lng }, zoom: 15 }
     );
 
-    // إضافة علامة
     const marker = new H.map.Marker({ lat: lat, lng: lng });
     map.addObject(marker);
-
-    // التحكم في الخريطة
     new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
+};
+
+// فتح في خرائط Google
+window.openGoogleMaps = (lat, lng) => {
+    window.open(`https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`, '_blank');
+};
+
+// فتح في Waze
+window.openWaze = (lat, lng) => {
+    window.open(`https://www.waze.com/ul?ll=${lat},${lng}&navigate=yes`, '_blank');
 };
