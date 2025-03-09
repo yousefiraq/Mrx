@@ -1,9 +1,9 @@
 import { db, collection, getDocs, updateDoc, doc, deleteDoc, getDoc } from "./firebase-config.js";
 
+// البحث عن الطلبات
 function searchOrders() {
     const searchTerm = document.getElementById('searchInput').value.toLowerCase();
     const rows = document.querySelectorAll('#ordersTable tr');
-    
     rows.forEach(row => {
         const name = row.cells[0].textContent.toLowerCase();
         row.style.display = name.includes(searchTerm) ? '' : 'none';
@@ -16,20 +16,16 @@ document.getElementById('searchInput').addEventListener('input', () => {
     searchTimeout = setTimeout(searchOrders, 300);
 });
 
+// جلب وتحديث الطلبات
 async function fetchOrders() {
     const tableBody = document.getElementById("ordersTable");
     tableBody.innerHTML = "";
-
-    let totalOrders = 0;
-    let pending = 0;
-    let delivered = 0;
-    let canceled = 0;
+    let totalOrders = 0, pending = 0, delivered = 0, canceled = 0;
 
     try {
         const querySnapshot = await getDocs(collection(db, "orders"));
         querySnapshot.forEach((docItem) => {
             const data = docItem.data();
-            
             totalOrders++;
             switch(data.status) {
                 case 'قيد الانتظار': pending++; break;
@@ -50,12 +46,17 @@ async function fetchOrders() {
                         </select>
                     </td>
                     <td>
-                        <button 
-                            class="map-btn" 
-                            onclick="showOrderMap(${data.latitude}, ${data.longitude})"
-                        >
-                            🌍 عرض الموقع
-                        </button>
+                        <div class="map-actions">
+                            <button class="map-btn" onclick="showOrderMap(${data.latitude},${data.longitude})">
+                                🌍 عرض الخريطة
+                            </button>
+                            <button class="google-btn" onclick="openGoogleMaps(${data.latitude},${data.longitude})">
+                                🗺️ فتح في Google Maps
+                            </button>
+                            <button class="waze-btn" onclick="openWaze(${data.latitude},${data.longitude})">
+                                🚗 فتح في Waze
+                            </button>
+                        </div>
                     </td>
                     <td>
                         <button class="action-btn edit-btn" data-id="${docItem.id}">✏️ تعديل</button>
@@ -66,11 +67,13 @@ async function fetchOrders() {
             tableBody.innerHTML += row;
         });
 
+        // تحديث العدادات
         document.getElementById('totalOrders').textContent = totalOrders;
         document.getElementById('pendingOrders').textContent = pending;
         document.getElementById('deliveredOrders').textContent = delivered;
         document.getElementById('canceledOrders').textContent = canceled;
 
+        // إضافة الأحداث
         document.querySelectorAll('.status-select').forEach(select => {
             select.addEventListener('change', async () => {
                 await updateOrderStatus(select.dataset.id, select.value);
@@ -79,9 +82,7 @@ async function fetchOrders() {
 
         document.querySelectorAll('.delete-btn').forEach(btn => {
             btn.addEventListener('click', async () => {
-                if (confirm('هل أنت متأكد من الحذف؟')) {
-                    await deleteOrder(btn.dataset.id);
-                }
+                if (confirm('هل أنت متأكد من الحذف؟')) await deleteOrder(btn.dataset.id);
             });
         });
 
@@ -91,15 +92,14 @@ async function fetchOrders() {
             });
         });
 
-        document.getElementById('searchInput').value = '';
         searchOrders();
-
     } catch (error) {
         console.error("حدث خطأ في جلب البيانات:", error);
         alert("تعذر تحميل الطلبات!");
     }
 }
 
+// حذف الطلب
 async function deleteOrder(orderId) {
     try {
         await deleteDoc(doc(db, "orders", orderId));
@@ -111,6 +111,7 @@ async function deleteOrder(orderId) {
     }
 }
 
+// تحديث حالة الطلب
 async function updateOrderStatus(orderId, newStatus) {
     try {
         await updateDoc(doc(db, "orders", orderId), { status: newStatus });
@@ -121,11 +122,11 @@ async function updateOrderStatus(orderId, newStatus) {
     }
 }
 
+// تعديل تفاصيل الطلب
 async function editOrderDetails(orderId) {
     try {
         const docRef = doc(db, "orders", orderId);
         const docSnap = await getDoc(docRef);
-        
         if (docSnap.exists()) {
             const data = docSnap.data();
             const newName = prompt("الاسم الحالي: " + data.name + "\n\nأدخل الاسم الجديد:", data.name);
