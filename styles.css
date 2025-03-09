@@ -169,3 +169,26 @@ body.dark-mode .counter-box {
     background: rgba(40, 40, 40, 0.9);
     color: white;
 }
+
+.map-btn {
+    background: linear-gradient(45deg, #007bff, #0056b3);
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+}
+
+.map-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 3px 12px rgba(0,123,255,0.3);
+}
+
+body.dark-mode .map-btn {
+    background: linear-gradient(45deg, #333, #444);
+}
